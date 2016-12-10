@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "browserify -t glslify src/index.js -o app/index.js",
+    "watch": "watchify -t glslify src/index.js -o app/index.js",
     "start": "browser-sync start -s 'app' --files 'app'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,6 +15,12 @@
   "author": "fand <fand@gmork.in>",
   "license": "MIT",
   "devDependencies": {
-    "browser-sync": "^2.18.2"
+    "browser-sync": "^2.18.2",
+    "browserify": "^13.1.1",
+    "glslify": "^6.0.1",
+    "watchify": "^3.7.0"
+  },
+  "dependencies": {
+    "three": "^0.82.1"
   }
 }
