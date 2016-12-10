@@ -1,0 +1,18 @@
+{
+  "name": "wgld",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "browser-sync start -s 'app' --files 'app'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webgl"
+  ],
+  "author": "fand <fand@gmork.in>",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.18.2"
+  }
+}
