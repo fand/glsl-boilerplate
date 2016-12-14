@@ -6,7 +6,8 @@
   "scripts": {
     "build": "browserify -t glslify src/index.js -o app/index.js",
     "watch": "watchify -t glslify src/index.js -o app/index.js",
-    "start": "browser-sync start -s 'app' --files 'app'",
+    "serve": "browser-sync start -s 'app' --files 'app'",
+    "start": "npm-run-all -p watch serve",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -18,6 +19,7 @@
     "browser-sync": "^2.18.2",
     "browserify": "^13.1.1",
     "glslify": "^6.0.1",
+    "npm-run-all": "^3.1.2",
     "watchify": "^3.7.0"
   },
   "dependencies": {
