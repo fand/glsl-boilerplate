@@ -4,13 +4,13 @@ precision mediump float;
 
 uniform float time;
 uniform vec2 resolution;
+uniform vec2 mouse;
 
 void main() {
-  vec2 pos = ( gl_FragCoord.xy / resolution.xy );
-  gl_FragColor = vec4(
-    sin( pos.x * cos( time / 15.0 ) * 80.0 ) + cos( pos.y * cos( time / 15.0 ) * 10.0 ),
-    pos.y,
-    pos.x,
-    1.0
-  );
+  vec2 pos = gl_FragCoord.xy / resolution.xy;
+  vec4 color = vec4(0.0);
+
+  color.b = pow(1.0 - distance(mouse, pos), 3.0);
+
+  gl_FragColor = color;
 }

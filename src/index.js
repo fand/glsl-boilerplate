@@ -26,25 +26,31 @@ uniforms.resolution.value.y = height;
 
 window.onload = function () {
   const scene    = new THREE.Scene();
-  const camera   = new THREE.OrthographicCamera(1, -1, -1, 1, 1, 1000);
+  const camera   = new THREE.OrthographicCamera(0, 0, 0, 0, 0, 1000);
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
   const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(100, 100, 1, 1),
-    // new THREE.MeshBasicMaterial({color: 0xff0000 })
+    new THREE.PlaneGeometry(2, 2, 1, 1),
     new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader })
   );
   scene.add(plane);
 
-  camera.position.z = 50;
+  const START = performance.now() / 1000.0;
+
+  let pos = [0, 0];
+  window.onmousemove = function (e) {
+    pos = [e.clientX / width, 1.0 - e.clientY / height];
+  };
 
   function render() {
     renderer.render(scene, camera);
     requestAnimationFrame(render);
 
-    uniforms.time.value += 0.05;
+    // Update uniform values
+    uniforms.time.value = performance.now() / 1000.0 - START;
+    uniforms.mouse.value.set(...pos);
   }
   render();
 };

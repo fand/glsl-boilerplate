@@ -42313,7 +42313,7 @@ module.exports = function(strings) {
 const THREE          = require('three');
 const glsl           = require('glslify');
 const vertexShader   = glsl(["#define GLSLIFY 1\nvoid main(void) {\n  gl_Position = vec4(position, 1.0);\n}\n"]);
-const fragmentShader = glsl(["#ifdef GL_ES\nprecision mediump float;\n#define GLSLIFY 1\n#endif\n\nuniform float time;\nuniform vec2 resolution;\n\nvoid main() {\n  vec2 pos = ( gl_FragCoord.xy / resolution.xy );\n  gl_FragColor = vec4(\n    sin( pos.x * cos( time / 15.0 ) * 80.0 ) + cos( pos.y * cos( time / 15.0 ) * 10.0 ),\n    pos.y,\n    pos.x,\n    1.0\n  );\n}\n"]);
+const fragmentShader = glsl(["#ifdef GL_ES\nprecision mediump float;\n#define GLSLIFY 1\n#endif\n\nuniform float time;\nuniform vec2 resolution;\nuniform vec2 mouse;\n\nvoid main() {\n  vec2 pos = gl_FragCoord.xy / resolution.xy;\n  vec4 color = vec4(0.0);\n\n  color.b = pow(1.0 - distance(mouse, pos), 3.0);\n\n  gl_FragColor = color;\n}\n"]);
 
 const width  = window.innerWidth;
 const height = window.innerHeight;
@@ -42338,25 +42338,31 @@ uniforms.resolution.value.y = height;
 
 window.onload = function () {
   const scene    = new THREE.Scene();
-  const camera   = new THREE.OrthographicCamera(1, -1, -1, 1, 1, 1000);
+  const camera   = new THREE.OrthographicCamera(0, 0, 0, 0, 0, 1000);
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
   const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(100, 100, 1, 1),
-    // new THREE.MeshBasicMaterial({color: 0xff0000 })
+    new THREE.PlaneGeometry(2, 2, 1, 1),
     new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader })
   );
   scene.add(plane);
 
-  camera.position.z = 50;
+  const START = performance.now() / 1000.0;
+
+  let pos = [0, 0];
+  window.onmousemove = function (e) {
+    pos = [e.clientX / width, 1.0 - e.clientY / height];
+  };
 
   function render() {
     renderer.render(scene, camera);
     requestAnimationFrame(render);
 
-    uniforms.time.value += 0.05;
+    // Update uniform values
+    uniforms.time.value = performance.now() / 1000.0 - START;
+    uniforms.mouse.value.set(...pos);
   }
   render();
 };
