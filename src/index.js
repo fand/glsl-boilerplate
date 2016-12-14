@@ -1,7 +1,7 @@
 const THREE          = require('three');
 const glsl           = require('glslify');
-const vertexShader   = glsl.file('./index.vs.glsl');
-const fragmentShader = glsl.file('./index.fs.glsl');
+const vertexShader   = glsl.file('./vs/index.vert');
+const fragmentShader = glsl.file('./fs/index.frag');
 
 const width  = window.innerWidth;
 const height = window.innerHeight;

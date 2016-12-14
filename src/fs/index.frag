@@ -2,7 +2,7 @@
 precision mediump float;
 #endif
 
-#pragma glslify: ppp = require("./fs/ppp.fs.glsl")
+#pragma glslify: ppp = require("./ppp.frag")
 
 uniform float time;
 uniform vec2 resolution;
